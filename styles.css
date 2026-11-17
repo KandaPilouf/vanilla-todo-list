@@ -75,7 +75,7 @@ input[type="text"] {
 	text-decoration: line-through;
 }
 
-.todo-actions {
+.todo-action {
 	display: flex;
 	gap: 10px;
 	align-items: flex-start;
