@@ -1,10 +1,16 @@
 document.addEventListener("DOMContentLoaded", () => {
-  function addTask(text) {
+  const KEY = "to-do";
+  const todos = JSON.parse(localStorage.getItem(KEY)) || [];
+  const save = () => localStorage.setItem(KEY, JSON.stringify(todos));
+
+  function addTask(text, id, saved = false) {
     const task = document.createElement("li");
     const label = document.createElement("span");
     const buttons = document.createElement("div");
     const done = document.createElement("button");
     const remove = document.createElement("button");
+
+    const item = { id: id || "id" + Math.random().toString(16).slice(2) };
 
     done.textContent = "A faire";
     done.classList.add("action-check");
@@ -25,6 +31,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     remove.addEventListener("click", (event) => {
       task.remove();
+      todos.splice(todos.findIndex((t) => t.id === item.id), 1);
+      save();
     });
 
     done.addEventListener("click", (event) => {
@@ -39,9 +47,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    const id = "id" + Math.random().toString(16).slice(2);
-
-    localStorage.setItem(JSON.stringify(id), JSON.stringify(label.textContent));
+    if (!saved) {
+      todos.push({ id: item.id, text });
+      save();
+    }
   }
 
   const add_button = document.querySelector("#add-todo");
@@ -58,7 +67,5 @@ document.addEventListener("DOMContentLoaded", () => {
     addTask(input.value);
   });
 
-  for (let i = 0; i < localStorage.length; i++) {
-    console.log(localStorage.key(i));
-  }
+  todos.forEach((t) => addTask(t.text, t.id, true));
 });
