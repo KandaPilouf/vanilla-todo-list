@@ -1,9 +1,10 @@
 :root {
-  --primary-color: #2e7d32;
+  --primary-color: #36449f;
   --danger-color: #dc3545;
   --font-color: #333;
   --background-color: #f4f4f4;
-  --border-radius: 5px;
+  --border-radius: 15px;
+  --inner-border-radius: 10px;
   --border-color: #c0c0c0;
 }
 
@@ -12,7 +13,7 @@ body {
   max-width: 1360px;
   margin: 0 auto;
   padding: 0 16px;
-  font-family: Arial, sans-serif;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   background-color: var(--background-color);
   color: var(--font-color);
 }
@@ -63,6 +64,7 @@ input[type="text"] {
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
   transition: all 0.3s ease-out;
+  background-color: white;
 }
 
 .todo-item span {
@@ -96,10 +98,12 @@ input[type="text"] {
 
   .action-check {
     background-color: var(--primary-color);
+	border-radius: var(--inner-border-radius);
   }
 
   .action-delete {
     background-color: var(--danger-color);
+	border-radius: var(--inner-border-radius);
   }
 }
 
