@@ -21,6 +21,9 @@ document.addEventListener("DOMContentLoaded", () => {
     label.textContent = text;
     task.classList.add("todo-item");
 
+    task.draggable = true;
+    task.dataset.id = item.id;
+
     buttons.classList.add("todo-action");
 
     buttons.appendChild(done);
@@ -57,6 +60,28 @@ document.addEventListener("DOMContentLoaded", () => {
   const task_list = document.querySelector("#todo-list");
   const input = document.querySelector("#new-todo");
 
+  let dragged;
+
+  task_list.addEventListener("dragstart", (event) => {
+    dragged = event.target.closest("li");
+    dragged.classList.add("dragging");
+  });
+
+  task_list.addEventListener("dragover", (event) => {
+    event.preventDefault();
+    const after = [...task_list.querySelectorAll("li:not(.dragging)")].find(
+      (li) => event.clientY < li.getBoundingClientRect().top + li.offsetHeight / 2
+    );
+    task_list.insertBefore(dragged, after || null);
+  });
+
+  task_list.addEventListener("dragend", () => {
+    dragged.classList.remove("dragging");
+    const order = [...task_list.children].map((li) => li.dataset.id);
+    todos.sort((a,b) => order.indexOf(a.id) - order.indexOf(b.id));
+    save();
+  });
+
   input.addEventListener("keydown", (event) => {
     if (event.keyCode === 13) {
       addTask(input.value);
@@ -67,5 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
     addTask(input.value);
   });
 
-  todos.forEach((t) => addTask(t.text, t.id, true));
+  todos.forEach((t) => {
+    addTask(t.text, t.id, true);
+  });
 });
